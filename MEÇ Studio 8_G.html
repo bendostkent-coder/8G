@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEÇ Studio 8/G</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Patrick+Hand&display=swap">
+<style>
+:root{--bg:#fff8e7;--card:#fff;--tx:#23303a;--mu:#6b7780;--ln:rgba(0,0,0,.1);--board:#1f4d3a;--ac:#ff5a4f;--glass:rgba(255,248,231,.85);--rule:#cfe3f5;--hf:"Fredoka","Trebuchet MS",system-ui,sans-serif;--hw:"Patrick Hand","Comic Sans MS",cursive;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17211c;--card:#22302a;--tx:#f3efe2;--mu:#a7b3ac;--ln:rgba(255,255,255,.14);--glass:rgba(23,33,28,.85);--rule:#2c3d35}}
+:root[data-theme="dark"]{--bg:#17211c;--card:#22302a;--tx:#f3efe2;--mu:#a7b3ac;--ln:rgba(255,255,255,.14);--glass:rgba(23,33,28,.85);--rule:#2c3d35}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg) repeating-linear-gradient(transparent 0 31px,var(--rule) 31px 32px);color:var(--tx);font:18px/1.55 var(--hw);min-height:100vh}
+h1,h2,h3,h4,.hf{font-family:var(--hf)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid #3b82f6;outline-offset:2px}
+/* intro */
+#intro{position:fixed;inset:0;z-index:100;background:#f7f9fb radial-gradient(circle at 50% 40%,#fff,#e6ebf0 85%);color:#23303a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;transition:opacity 1s,visibility 1s;overflow:hidden;padding:20px}
+#intro.gone{opacity:0;visibility:hidden}
+#intro::before{content:"";position:absolute;inset:14px;border:10px solid #aab4be;border-radius:14px;pointer-events:none}
+#intro .hi{font:30px var(--hw);opacity:0}
+#intro h1{font-size:clamp(46px,13vw,130px);line-height:1;letter-spacing:-.02em;display:flex;flex-wrap:wrap;justify-content:center;gap:0 .04em}
+#intro h1 span{display:inline-block;opacity:0;transform:translateY(60px) rotate(-12deg) scale(.4)}
+#intro .cls{font-family:var(--hf);font-weight:700;font-size:clamp(34px,8vw,70px);background:#ffc933;color:#23303a;padding:2px 26px;border-radius:16px;transform:rotate(-4deg) scale(3);opacity:0}
+#intro .sub{font:clamp(20px,3.5vw,30px) var(--hw);color:#4b5b68;opacity:0}
+#intro .bar{width:min(320px,70vw);height:12px;border-radius:9px;background:rgba(0,0,0,.12);overflow:hidden;opacity:0}
+#intro .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5a4f,#ffc933,#4ade80,#60a5fa)}
+#intro .go{font-family:var(--hf);font-weight:700;font-size:24px;background:#ffc933;color:#23303a;padding:16px 40px;border-radius:99px;box-shadow:0 6px 0 #c9971b;margin-top:10px}
+#intro .go:active{transform:translateY(4px);box-shadow:0 2px 0 #c9971b}
+#intro.play .go,#intro.play .tap{display:none}
+#intro .tap{color:#6b7780}
+#intro.play .hi{animation:fi .6s .1s forwards}
+#intro.play h1 span{animation:pop .7s forwards}
+#intro.play .cls{animation:stamp .5s 2.4s forwards}
+#intro.play .sub{animation:fi .8s 3.1s forwards}
+#intro.play .bar{animation:fi .4s 3.4s forwards}
+#intro.play .bar i{animation:fill 2.6s 3.5s linear forwards}
+@keyframes fi{to{opacity:1}}
+@keyframes pop{60%{transform:translateY(-8px) rotate(3deg) scale(1.15)}to{opacity:1;transform:none}}
+@keyframes stamp{to{opacity:1;transform:rotate(-4deg) scale(1)}}
+@keyframes fill{to{width:100%}}
+/* site */
+header{position:sticky;top:0;z-index:20;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:3px dashed var(--ln);padding-top:env(safe-area-inset-top,0px)}
+header div{max-width:1000px;margin:auto;height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+header b{font-family:var(--hf);font-size:22px;cursor:pointer}
+header b em{font-style:normal;background:#ffc933;color:#23303a;border-radius:9px;padding:0 9px;margin-left:6px;font-size:17px}
+header a{color:var(--mu);margin-left:18px;cursor:pointer;font-size:19px}
+main{max-width:1000px;margin:auto;padding:0 20px 120px}
+.hero{margin-top:26px;background:#fff;color:#23303a;border-radius:26px;border:10px solid #aab4be;padding:48px 28px;text-align:center;box-shadow:0 10px 0 rgba(0,0,0,.15)}
+.hero h2{font-size:clamp(34px,7vw,64px);line-height:1.05}
+.hero p{font:clamp(20px,3vw,28px) var(--hw);color:#4b5b68;margin-top:10px}
+.sh{font-size:clamp(30px,5vw,44px);margin:52px 0 4px}
+.lead{color:var(--mu);font-size:21px}
+.subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:26px}
+.sub{background:var(--c);color:#fff;border-radius:8px 24px 24px 8px;min-height:170px;padding:26px 26px 26px 44px;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;position:relative;box-shadow:6px 8px 0 rgba(0,0,0,.14);transition:transform .2s}
+.sub:hover{transform:rotate(-1.5deg) translateY(-4px)}
+.sub::before{content:"";position:absolute;left:14px;top:14px;bottom:14px;width:10px;background:radial-gradient(circle,rgba(255,255,255,.85) 4px,transparent 5px) 0 0/10px 26px}
+.sub i{position:absolute;top:18px;right:22px;font-style:normal;font-size:54px}
+.sub span{font-family:var(--hf);font-size:30px;font-weight:700}
+.sub small{font-size:19px;opacity:.9}
+.back{margin-top:26px;font-family:var(--hf);background:var(--card);border:3px solid var(--ln);padding:8px 20px;border-radius:99px}
+.top{margin-top:22px;border-radius:26px;padding:34px;color:#fff;background:var(--c);position:relative;box-shadow:0 8px 0 rgba(0,0,0,.15)}
+.top h2{font-size:clamp(34px,6vw,58px)}
+.top i{position:absolute;right:26px;top:16px;font-style:normal;font-size:70px}
+.bl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:28px}
+.bk{background:var(--card);border:3px solid var(--c);border-radius:20px;padding:22px;text-align:left;display:flex;flex-direction:column;gap:4px;box-shadow:5px 6px 0 var(--c);transition:transform .15s}
+.bk:hover{transform:translate(-2px,-3px)}
+.bk b{font-family:var(--hf);font-size:23px}.bk small{color:var(--mu);font-size:18px}
+.wip{margin-top:28px;background:var(--card);border:3px dashed var(--c);border-radius:20px;padding:34px;text-align:center;font-size:24px}
+.about{margin-top:70px;background:var(--card);border-radius:26px;border:3px solid var(--ln);padding:40px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center;box-shadow:0 8px 0 var(--ln)}
+.about h3{font-size:clamp(30px,5vw,42px)}
+.about p{font-size:21px;color:var(--mu);margin-top:10px}
+.about a{color:#2563eb}
+.stats{display:grid;gap:12px}
+.stats div{background:var(--bg);border-radius:16px;padding:14px 18px;font-size:19px}
+.stats strong{display:block;font:700 26px var(--hf)}
+footer{text-align:center;color:var(--mu);padding:30px 0 0}
+/* viewer */
+#viewer{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#viewer.on{display:flex}
+.vbar{display:flex;gap:10px;align-items:center;padding:10px 14px;border-bottom:3px dashed var(--ln);background:var(--glass)}
+.vbar b{flex:1;font:600 18px var(--hf);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vbar button,.vbar a{background:var(--card);padding:7px 16px;border-radius:99px;color:var(--tx);text-decoration:none;border:3px solid var(--ln)}
+.vbar a{background:#ffc933;color:#23303a;border-color:#c9971b;font-weight:600}
+#note{font-size:16px;color:var(--mu);padding:6px 14px;text-align:center}
+#frame{flex:1;width:100%;border:0;background:#fff}
+/* pen */
+#pen{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:8px;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:3px solid var(--ln);border-radius:99px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#pen .tools{display:none;align-items:center;gap:8px;padding-left:8px}
+#pen.open .tools{display:flex}
+#pen .toggle{width:48px;height:48px;border-radius:50%;background:#ffc933;font-size:24px;border:3px solid #c9971b}
+#pen .toggle.act{box-shadow:0 0 0 4px rgba(59,130,246,.5)}
+.sw{width:24px;height:24px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--ln);cursor:pointer}
+.sw.s{box-shadow:0 0 0 3px #3b82f6}
+#pen .t{font-size:16px;padding:4px 10px;border-radius:99px;background:var(--card);border:2px solid var(--ln)}
+#pen input{width:64px}
+#draw{position:fixed;inset:0;z-index:60;pointer-events:none;touch-action:none}
+#draw.on{pointer-events:auto;cursor:crosshair}
+.brow{display:flex;gap:8px;margin-top:18px}.brow input{flex:1;min-width:0;font:inherit;padding:12px 18px;border-radius:99px;border:3px solid var(--ln);background:var(--card);color:var(--tx)}.brow button{background:#ffc933;border:3px solid #c9971b;border-radius:99px;padding:8px 18px;font-weight:600;color:#23303a}#bframe{width:100%;height:70vh;margin-top:14px;border:3px solid var(--ln);border-radius:16px;background:#fff}
+@media(max-width:720px){.about{grid-template-columns:1fr;padding:26px}header a{margin-left:12px}.top i{font-size:48px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="intro">
+  <div class="hi">Hoş geldin! 🔔</div>
+  <h1 id="ilogo" aria-label="MEÇ Studio"></h1>
+  <div class="cls">8/G</div>
+  <div class="sub">Sınıfımızın dijital kitaplığı</div>
+  <div class="bar"><i></i></div>
+  <p class="tap hf" style="font-size:22px">Zil çalmak üzere…</p>
+  <button class="go" id="go">Sınıfa Gir</button>
+</div>
+
+<header><div><b id="home">MEÇ Studio<em>8/G</em></b><span><a id="nSub">Dersler</a><a id="nBr">Tarayıcı</a><a id="nAbout">Biz kimiz</a></span></div></header>
+<main id="app"></main>
+
+<div id="viewer" role="dialog" aria-label="Kitap">
+  <div class="vbar"><button id="vback">‹ Geri</button><b id="vtitle"></b><button id="vg">Doğrudan aç</button><a id="vext" target="_blank" rel="noopener">Yeni sekmede aç</a></div>
+  <div id="note">Kitaplar Google üzerinden açılıyor. Görünmüyorsa “Doğrudan aç”ı dene ya da “Yeni sekmede aç”a bas.</div>
+  <iframe id="frame" title="Kitap" allow="fullscreen" referrerpolicy="no-referrer"></iframe>
+</div>
+
+<canvas id="draw"></canvas>
+<div id="pen">
+  <div class="tools">
+    <span class="sw s" data-c="#ff3b30" style="background:#ff3b30"></span>
+    <span class="sw" data-c="#2563eb" style="background:#2563eb"></span>
+    <span class="sw" data-c="#16a34a" style="background:#16a34a"></span>
+    <span class="sw" data-c="#f59e0b" style="background:#f59e0b"></span>
+    <span class="sw" data-c="#23303a" style="background:#23303a"></span>
+    <input type="range" id="size" min="2" max="24" value="5" aria-label="Kalem kalınlığı">
+    <button class="t" id="erase">Silgi</button>
+    <button class="t" id="clear">Temizle</button>
+  </div>
+  <button class="toggle" id="ptoggle" aria-label="Kalem">✏️</button>
+</div>
+
+<script>
+const S=[
+ {n:"Matematik",e:"📐",c:"#2563eb",b:[
+  {t:"Kondisyon",d:"8. Sınıf",u:"https://fliphtml5.com/bookcase/cwsdw"},
+  {t:"8. Sınıf Hep",d:"Hiper Zeka",u:"https://www.hiperzekadijital.com/zkitapx.php?code=OERETkM0RDY="},
+  {t:"Banko",d:"Model Öğretmen",u:"https://modelogretmen.com/zkitapx.php?code=OENDS1pCSjM="},
+  {t:"Benim Hocam",d:"Kütüphane",u:"https://benimhocamkutuphane.com/zkitapx.php?code=U1NIWjg3SDU="}]},
+ {n:"Türkçe",e:"📖",c:"#e11d48",b:[
+  {t:"Bumerang",d:"Günay Portal",u:"https://www.gunayportal.com/zkitapx.php?code=OEFENFJISFk="},
+  {t:"Paragraf",d:"Gizli Okul",u:"https://gizliokul.com/zkitapx.php?code=QkFERFpCRDE="}]},
+ {n:"Fen Bilimleri",e:"🔬",c:"#16a34a",b:[],wip:1},
+ {n:"Din Kültürü",e:"🕌",c:"#d97706",b:[
+  {t:"Bumerang Denemeler",d:"Günay Portal",u:"https://www.gunayportal.com/zkitapx.php?code=OEFENFJISFk="}]},
+ {n:"İngilizce",e:"🌍",c:"#9333ea",b:[
+  {t:"Tüm Kitaplar",d:"Team ELT",u:"https://lms.teamelt.com/login"}]},
+ {n:"İnkılap Tarihi",e:"🏛️",c:"#92400e",b:[
+  {t:"Bumerang",d:"Günay Portal",u:"https://www.gunayportal.com/zkitapx.php?code=OEFENFJISFk="},
+  {t:"Dijital İçerik",d:"345 Dijital",u:"https://www.345dijitalicerik.com/zkitapx.php?code=TEFDNFYxTkU="}]}
+];
+const $=s=>document.querySelector(s),app=$("#app");
+function homePage(){
+  app.innerHTML=`<div class="hero"><h2>8/G sınıfı dijital kitaplığı</h2><p>Dersini seç, kitabını aç, çalışmaya başla.</p></div>
+  <h2 class="sh" id="dersler">Dersler</h2><p class="lead">Bir derse bas, kitapları ayrı sayfada seç.</p>
+  <div class="subs">${S.map((s,i)=>`<button class="sub" style="--c:${s.c}" data-i="${i}"><i>${s.e}</i><span>${s.n}</span><small>${s.wip?"Yakında":s.b.length+" kitap"}</small></button>`).join("")}</div>
+  <div class="about" id="biz"><div><h3>Biz kimiz?</h3><p>Biz <a href="https://mecstudio.oneapp.dev/" target="_blank" rel="noopener">MEÇ Studio</a>’yuz. 8/G sınıfı için en işe yarar kitapları ve denemeleri tek sayfada topladık; aramakla vakit kaybetmeden çalış diye.</p></div>
+  <div class="stats"><div><strong>6 ders</strong>Matematikten İnkılap Tarihi’ne</div><div><strong>Tek sayfa</strong>Tüm kitaplar burada</div><div><strong>Kalem</strong>Ekrana not al, çiz</div></div></div>
+  <footer>© MEÇ Studio · 8/G</footer>`;
+  app.querySelectorAll(".sub").forEach(b=>b.onclick=()=>{location.hash="ders-"+b.dataset.i});
+}
+function subjectPage(i){
+  const s=S[i];
+  app.innerHTML=`<button class="back" id="bk">‹ Derslere dön</button>
+  <div class="top" style="--c:${s.c}"><i>${s.e}</i><h2>${s.n}</h2><p>${s.wip?"":"Açmak istediğin kitabı seç."}</p></div>
+  ${s.wip?`<div class="wip" style="--c:${s.c}">🛠️ Bu web sitesi geliştiriliyor.</div>`:`<div class="bl">${s.b.map((k,j)=>`<button class="bk" style="--c:${s.c}" data-j="${j}"><b>${k.t}</b><small>${k.d}</small></button>`).join("")}</div>`}`;
+  $("#bk").onclick=()=>{location.hash=""};
+  app.querySelectorAll(".bk").forEach(b=>b.onclick=()=>openBook(s.b[b.dataset.j]));
+}
+function browserPage(){
+  app.innerHTML=`<button class="back" id="bk">‹ Ana sayfa</button><div class="top" style="--c:#2563eb"><i>🌐</i><h2>Tarayıcı</h2><p>Adres yaz ya da Google’da ara.</p></div>
+  <div class="brow"><input id="addr" placeholder="Adres yaz ya da ara" autocomplete="off" aria-label="Adres"><button id="gob">Git</button><button id="gnew">Yeni sekme</button></div>
+  <iframe id="bframe" title="Tarayıcı" allow="fullscreen" referrerpolicy="no-referrer"></iframe>`;
+  $("#bk").onclick=()=>{location.hash=""};
+  const tgt=q=>{q=q.trim();if(!q)return null;if(/^https?:\/\//i.test(q))return q;if(/^[\w-]+(\.[\w-]+)+(\/|$)/.test(q))return"https://"+q;return null};
+  const go=()=>{const q=$("#addr").value,u=tgt(q);if(!q.trim())return;$("#bframe").src=u?gurl(u):"https://www.google.com/search?igu=1&q="+encodeURIComponent(q)};
+  $("#gob").onclick=go;$("#addr").addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+  $("#gnew").onclick=()=>{const q=$("#addr").value,u=tgt(q);if(q.trim())window.open(u||"https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener")};
+}
+function route(){
+  const m=/^#ders-(\d)$/.exec(location.hash);
+  if(location.hash==="#tarayici")browserPage();else if(m&&S[m[1]])subjectPage(+m[1]);else homePage();
+  scrollTo(0,0);
+}
+addEventListener("hashchange",route);route();
+function go(id){if(location.hash){location.hash="";setTimeout(()=>$(id).scrollIntoView({behavior:"smooth"}),60)}else $(id).scrollIntoView({behavior:"smooth"})}
+$("#home").onclick=()=>{location.hash="";scrollTo(0,0)};
+$("#nBr").onclick=()=>{location.hash="tarayici"};$("#nSub").onclick=()=>go("#dersler");$("#nAbout").onclick=()=>go("#biz");
+function gurl(s){const u=new URL(s);return "https://"+u.hostname.replace(/-/g,"--").replace(/\./g,"-")+".translate.goog"+u.pathname+u.search+(u.search?"&":"?")+"_x_tr_sl=auto&_x_tr_tl=tr&_x_tr_hl=tr&_x_tr_pto=wapp"}
+function openBook(k){$("#vtitle").textContent=k.t;$("#vext").href=k.u;$("#frame").src=gurl(k.u);$("#viewer").classList.add("on");document.body.style.overflow="hidden"}
+function closeBook(){$("#viewer").classList.remove("on");$("#frame").src="about:blank";document.body.style.overflow=""}
+$("#vg").onclick=()=>{$("#frame").src=$("#vext").href};
+$("#vback").onclick=closeBook;addEventListener("keydown",e=>{if(e.key==="Escape")closeBook()});
+
+/* Giriş: harfler + ses */
+const colors=["#e11d48","#d97706","#16a34a","#2563eb","#9333ea","#ea580c"];
+"MEÇ Studio".split("").forEach((ch,i)=>{const s=document.createElement("span");s.textContent=ch===" "?"\u00A0":ch;s.style.color=colors[i%6];s.style.animationDelay=(.5+i*.16)+"s";$("#ilogo").appendChild(s)});
+function sound(){
+  try{
+    const a=new (window.AudioContext||window.webkitAudioContext)(),t=a.currentTime,m=a.createGain();m.gain.value=.3;m.connect(a.destination);
+    const note=(f,st,d,ty,v)=>{const o=a.createOscillator(),g=a.createGain();o.type=ty||"sine";o.frequency.value=f;g.gain.setValueAtTime(0,t+st);g.gain.linearRampToValueAtTime(v||.5,t+st+.03);g.gain.exponentialRampToValueAtTime(.001,t+st+d);o.connect(g);g.connect(m);o.start(t+st);o.stop(t+st+d+.05)};
+    for(let r=0;r<6;r++){const st=r*.14;note(1568,st,.3,"square",.12);note(2093,st,.3,"sine",.25)} /* okul zili */
+    [[261.63,329.63,392],[349.23,440,523.25],[392,493.88,587.33],[523.25,659.25,783.99]].forEach((c,i)=>c.forEach(f=>note(f,1.1+i*.55,1.4,"triangle",.35)));
+    [523.25,659.25,783.99,1046.5].forEach((f,i)=>note(f,3.6+i*.12,1.6,"sine",.4)); /* fanfar */
+    note(65.4,1.1,2.4,"sine",.7);note(130.8,3.3,3,"sine",.6);
+    [3,3.4,3.8].forEach(st=>note(1174.7+st*40,st,.5,"sine",.25));
+  }catch(e){}
+}
+$("#go").onclick=()=>{sound();$("#intro").classList.add("play");setTimeout(()=>$("#intro").classList.add("gone"),6900)};
+
+/* Kalem */
+(function(){
+  const cv=$("#draw"),cx=cv.getContext("2d"),pen=$("#pen");let on=0,col="#ff3b30",er=0,dr=0,lx,ly;
+  function rs(){const d=cx.getImageData(0,0,cv.width||1,cv.height||1);cv.width=innerWidth;cv.height=innerHeight;cx.putImageData(d,0,0);cx.lineCap=cx.lineJoin="round"}
+  rs();addEventListener("resize",rs);
+  $("#ptoggle").onclick=()=>{on=!on;pen.classList.toggle("open",on);cv.classList.toggle("on",on);$("#ptoggle").classList.toggle("act",on)};
+  document.querySelectorAll(".sw").forEach(s=>s.onclick=()=>{document.querySelectorAll(".sw").forEach(z=>z.classList.remove("s"));s.classList.add("s");col=s.dataset.c;er=0;$("#erase").style.background=""});
+  $("#erase").onclick=()=>{er=!er;$("#erase").style.background=er?"#ffc933":""};
+  $("#clear").onclick=()=>cx.clearRect(0,0,cv.width,cv.height);
+  cv.addEventListener("pointerdown",e=>{dr=1;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener("pointermove",e=>{if(!dr)return;cx.globalCompositeOperation=er?"destination-out":"source-over";cx.strokeStyle=col;cx.lineWidth=$("#size").value*(er?3:1);cx.beginPath();cx.moveTo(lx,ly);cx.lineTo(e.clientX,e.clientY);cx.stroke();lx=e.clientX;ly=e.clientY});
+  ["pointerup","pointercancel"].forEach(n=>cv.addEventListener(n,()=>dr=0));
+})();
+</script>
+</body>
+</html>
